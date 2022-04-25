@@ -1,13 +1,17 @@
-import { useState } from 'react'
-import logo from './logo.svg'
+
 import './App.css'
+import Generator from './Generator'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
 
   return (
-    <div></div>
+    <div>
+      <Generator></Generator>
+    </div>
+    
   )
 }
 
 export default App
+
