@@ -47,6 +47,7 @@ function App() {
     var boxOnMouseDown = (event) => {
         if (!userimage) return;
         setIsMouseDrag(true)
+        console.log(event)
         // console.log(`box mouse down type : ${event.type}`)
         // console.log(`box mouse down : ${isMouseDrag}`)  
 
