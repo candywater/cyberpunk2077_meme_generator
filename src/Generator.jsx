@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import logo1 from './stills/logo-en-ed943f1c.png'
 import logo2 from './stills/logo-horizontal-en-8f759eab.svg'
 import html2canvas from 'html2canvas'
@@ -15,6 +15,7 @@ function App() {
     let [boxTop, setBoxTop] = useState(0)
     let [boxOffsetWidth, setBoxOffsetWidth] = useState(0)
     let [boxOffsetHeight, setBoxOffsetHeight] = useState(0)
+    let [resImage, setResImage] = useState("")
 
     // let [disX, setDisX] = useState(0)
     // let [disY, setDisY] = useState(0)
@@ -36,11 +37,21 @@ function App() {
         }
     }
 
-    function submitUserImage(event) {
+    async function submitUserImage(event) {
         console.log("submitted")
-        html2canvas(document.getElementById('father')).then(function (canvas) {
-            document.body.appendChild(canvas);
-        });
+        var result = await html2canvas(document.getElementById('father'));
+        removeAllChild(document.querySelector("#res"))
+        document.querySelector("#res").appendChild(result)
+        console.log(result)
+    }
+
+    function removeAllChild(node){
+        if(!node) return;
+        if(!node.childNodes) return;
+        node.childNodes.forEach(x =>{
+            if(x)
+                node.removeChild(x)
+        })
     }
 
     /* box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标 */
@@ -94,13 +105,17 @@ function App() {
         // event.target.onmouseup = null
     }
 
+    const FileInputClass = `inline-flex items-center px-4 py-2 bg-gray-600 border border-gray-600 rounded-l 
+    font-semibold cursor-pointer text-sm text-white tracking-widest 
+    hover:bg-gray-500 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition `
+    const SubmitBtnClass = `text-sm rounded-r-lg bg-sky-400  text-gray-800 font-bold px-4 py-2 uppercase border-sky-500 border-t border-b border-r`
+    
+
     return (
         <div>
 
-            <input className='inline-flex items-center px-4 py-2 bg-gray-600 border border-gray-600 rounded-l 
-            font-semibold cursor-pointer text-sm text-white tracking-widest 
-            hover:bg-gray-500 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition ' type="file" id="selectFiles" onChange={dealSelectFile}></input>
-            <button className='text-sm rounded-r-lg bg-sky-400  text-gray-800 font-bold px-4 py-2 uppercase border-sky-500 border-t border-b border-r' type="button" onClick={submitUserImage}>Submit</button>
+            <input className={FileInputClass} type="file" id="selectFiles" onChange={dealSelectFile}></input>
+            <button className={SubmitBtnClass} type="button" onClick={submitUserImage}>Submit</button>
 
             {/* box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标 */}
             <div id="father"
@@ -131,6 +146,8 @@ function App() {
                 </div>
             </div>
 
+            <div id='res'>
+                </div>
         </div>
     )
 }
