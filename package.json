@@ -22,7 +22,7 @@
         "vite": "^2.9.5"
     },
     "author": "candywater <candywater@users.noreply.github.com>",
-    "license": "GPL",
+    "license": "MIT",
     "logo-horizontal-en-8f759eab.svg": "https://www.cyberpunk.net/build/images/next-gen/logo-horizontal-en-8f759eab.svg",
     "logo-en-ed943f1c.png": "https://www.cyberpunk.net/build/images/logo-en-ed943f1c.png"
 }
