@@ -97,12 +97,13 @@ function App() {
     // 图形移出父盒子取消移动事件,防止移动过快触发鼠标移出事件,导致鼠标弹起事件失效
     var faOnmouseLeave = event => {
         event.target.onmousemove = null
-        event.target.onmouseup = null
+        // event.target.onmouseup = null
     }
     // 鼠标弹起后停止移动
-    var faOnmouserUp = (event) => {
+    var faOnmouserUp = (event) => {        
+        setIsMouseDrag(false)
         event.target.onmousemove = null
-        event.target.onmouseup = null
+        // event.target.onmouseup = null
     }
 
     const HeaderClass = `
