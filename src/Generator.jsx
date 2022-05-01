@@ -20,13 +20,14 @@ function App() {
     let [mouseStartDragTop, setMouseStartDragTop] = useState(0)
 
     let [isMouseDrag, setIsMouseDrag] = useState(false)
+    let [isSubmitted, setIsSubmitted] = useState(false)
 
-    function dealSelectFile(event) {
+    var dealSelectFile = (event) => {
         // get select file.
         var file = event.target.files[0];
         var reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onloadend = function () {
+        reader.onloadend =  function() {
             backgroundImage.src = this.result
             backgroundImage.onload = () => {
                 setUserimage(backgroundImage.src);
@@ -36,15 +37,16 @@ function App() {
         }
     }
 
-    async function submitUserImage(event) {
+    var submitUserImage = async (event) => {
         console.log("submitted")
         var result = await html2canvas(document.getElementById('father'));
         removeAllChild(document.querySelector("#res"))
         document.querySelector("#res").appendChild(result)
+        setIsSubmitted(true)
         console.log(result)
     }
 
-    function removeAllChild(node) {
+    var removeAllChild = (node) => {
         if (!node) return;
         if (!node.childNodes) return;
         node.childNodes.forEach(x => {
@@ -103,48 +105,71 @@ function App() {
         event.target.onmouseup = null
     }
 
-    const FileInputClass = `inline-flex items-center px-4 py-2 bg-gray-600 border border-gray-600 rounded-l 
+    const FileInputClass = `
+    px-4 py-2
+    bg-gray-600
+    border border-gray-600
+    rounded-l-lg 
+    inline-flex items-center   
     font-semibold cursor-pointer text-sm text-white tracking-widest 
-    hover:bg-gray-500 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition `
-    const SubmitBtnClass = `text-sm rounded-r-lg bg-sky-400  text-gray-800 font-bold px-4 py-2 uppercase border-sky-500 border-t border-b border-r`
-
+    hover:bg-gray-500 
+    active:bg-gray-900 
+    focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 
+    disabled:opacity-25 transition `
+    const SubmitBtnClass = `
+    text-sm rounded-r-lg 
+    bg-sky-400 
+    text-gray-800 font-bold 
+    px-4 py-2 
+    uppercase 
+    border-sky-500 border-t border-b border-r`
+    const ResDivClass = `bg-white bg-opacity-50 border-2 border-zinc-900 mt-1 `
 
     return (
-        <div>
+        <div className='m-5' >
 
             <input className={FileInputClass} type="file" id="selectFiles" onChange={dealSelectFile}></input>
             <button className={SubmitBtnClass} type="button" onClick={submitUserImage}>Submit</button>
 
-            {/* box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标 */}
-            <div id="father"
-                style={{
-                    backgroundImage: `url(${userimage})`,
+            <div>
+                {/* box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标 */}
+                <div id="father"
+                    className={ResDivClass}
+                    style={{
+                        backgroundImage: `url(${userimage})`,
+                        // height: `fit-content`,
+                        // width: `fit-content`,
+                        height: `${userimageheight}px`,
+                        width: `${userimagewidth}px`
+                    }}
+                    onMouseMove={faOnMouseMove}
+                    onMouseUp={faOnmouserUp}
+                    onMouseLeave={faOnmouseLeave}
+                >
+                    {/* <img src={userimage} alt="" /> */}
+                    <div id="box"
+                        onMouseDown={boxOnMouseDown}
+                        onMouseUp={boxOnMouseUp}
+                        onMouseMove={boxOnMouseMove}
+                        style={{
+                            position: backgroundImage ? 'relative' : 'absolute',
+                            left: `${boxLeft}px`,
+                            top: `${boxTop}px`
+                        }}
+                    // offsetLeft={boxLeft}
+                    // offsetTop={boxTop}
+                    >
+                        <img src={logo2} alt="" srcSet="" />
+                        <div id="scale"></div>
+                    </div>
+                </div>
+
+                <div id='res' className={ResDivClass} style={{
+                    display : isSubmitted ? 'block' : 'none',
                     height: `${userimageheight}px`,
                     width: `${userimagewidth}px`
-                }}
-                onMouseMove={faOnMouseMove}
-                onMouseUp={faOnmouserUp}
-                onMouseLeave={faOnmouseLeave}
-            >
-                {/* <img src={userimage} alt="" /> */}
-                <div id="box"
-                    onMouseDown={boxOnMouseDown}
-                    onMouseUp={boxOnMouseUp}
-                    onMouseMove={boxOnMouseMove}
-                    style={{
-                        position: backgroundImage ? 'relative' : 'absolute',
-                        left: `${boxLeft}px`,
-                        top: `${boxTop}px`
-                    }}
-                // offsetLeft={boxLeft}
-                // offsetTop={boxTop}
-                >
-                    <img src={logo2} alt="" srcSet="" />
-                    <div id="scale"></div>
+                }}>
                 </div>
-            </div>
-
-            <div id='res'>
             </div>
         </div>
     )
