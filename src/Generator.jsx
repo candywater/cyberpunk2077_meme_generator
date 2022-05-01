@@ -27,7 +27,7 @@ function App() {
         var file = event.target.files[0];
         var reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onloadend =  function() {
+        reader.onloadend = function () {
             backgroundImage.src = this.result
             backgroundImage.onload = () => {
                 setUserimage(backgroundImage.src);
@@ -105,6 +105,12 @@ function App() {
         event.target.onmouseup = null
     }
 
+    const HeaderClass = `
+    z-20 fixed 
+    `
+    const FakeHeaderClass = `
+    h-12
+    `
     const FileInputClass = `
     px-4 py-2
     bg-gray-600
@@ -128,8 +134,12 @@ function App() {
     return (
         <div className='m-5' >
 
-            <input className={FileInputClass} type="file" id="selectFiles" onChange={dealSelectFile}></input>
-            <button className={SubmitBtnClass} type="button" onClick={submitUserImage}>Submit</button>
+            <div className={HeaderClass}>
+                <input className={FileInputClass} type="file" id="selectFiles" onChange={dealSelectFile}></input>
+                <button className={SubmitBtnClass} type="button" onClick={submitUserImage}>Submit</button>
+            </div>
+
+            <div className={FakeHeaderClass}></div>
 
             <div>
                 {/* box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标 */}
@@ -165,7 +175,7 @@ function App() {
                 </div>
 
                 <div id='res' className={ResDivClass} style={{
-                    display : isSubmitted ? 'block' : 'none',
+                    display: isSubmitted ? 'block' : 'none',
                     height: `${userimageheight}px`,
                     width: `${userimagewidth}px`
                 }}>
