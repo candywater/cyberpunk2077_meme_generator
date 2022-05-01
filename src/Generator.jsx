@@ -13,7 +13,7 @@ function App() {
 
     let [boxLeft, setBoxLeft] = useState(0)
     let [boxTop, setBoxTop] = useState(0)
-    
+
     let [boxStartDragLeft, setBoxStartDragLeft] = useState(0)
     let [boxStartDragTop, setBoxStartDragTop] = useState(0)
     let [mouseStartDragLeft, setMouseStartDragLeft] = useState(0)
@@ -44,11 +44,11 @@ function App() {
         console.log(result)
     }
 
-    function removeAllChild(node){
-        if(!node) return;
-        if(!node.childNodes) return;
-        node.childNodes.forEach(x =>{
-            if(x)
+    function removeAllChild(node) {
+        if (!node) return;
+        if (!node.childNodes) return;
+        node.childNodes.forEach(x => {
+            if (x)
                 node.removeChild(x)
         })
     }
@@ -62,10 +62,7 @@ function App() {
         setMouseStartDragLeft(event.clientX)
         setMouseStartDragTop(event.clientY)
 
-        console.log(event)
-        // console.log(`box mouse down type : ${event.type}`)
-        // console.log(`box mouse down : ${isMouseDrag}`)  
-
+        // console.log(event)
         // to prevent image draggable
         event.preventDefault();
     }
@@ -74,14 +71,12 @@ function App() {
         if (!userimage) return;
         setIsMouseDrag(false)
 
-        // console.log(`box mouse up type : ${event.type}`)
-        // console.log(`box mouse up : ${isMouseDrag}`)        
-
         // to prevent image draggable
         event.preventDefault();
     }
 
     var boxOnMouseMove = event => {
+        // if (event.clientX > userimagewidth || event.clientY > userimageheight) setIsMouseDrag(false)
         if (!userimage) return;
         if (!isMouseDrag) return;
         event.preventDefault();
@@ -89,17 +84,12 @@ function App() {
         let mouseDraggedTopOnBox = event.clientY - mouseStartDragTop
         setBoxLeft(boxStartDragLeft + mouseDraggedLeftOnBox)
         setBoxTop(boxStartDragTop + mouseDraggedTopOnBox)
-
-        // console.log(`clientX: ${event.clientX}\nclientY: ${event.clientY}`)
-        // console.log(`mouseLeftOnBox: ${mouseLeftOnBox}\nmouseTopOnBox: ${mouseTopOnBox}`)
-
-        // console.log(`box mouse move type : ${event.type}`)
-        // console.log(`box mouse move : ${isMouseDrag}`)   
     }
 
     var faOnMouseMove = event => {
-        event.target.onmousemove = null
-        event.target.onmouseup = null
+        // event.target.onmousemove = null
+        // event.target.onmouseup = null
+        event.preventDefault()
     }
 
     // 图形移出父盒子取消移动事件,防止移动过快触发鼠标移出事件,导致鼠标弹起事件失效
@@ -117,7 +107,7 @@ function App() {
     font-semibold cursor-pointer text-sm text-white tracking-widest 
     hover:bg-gray-500 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition `
     const SubmitBtnClass = `text-sm rounded-r-lg bg-sky-400  text-gray-800 font-bold px-4 py-2 uppercase border-sky-500 border-t border-b border-r`
-    
+
 
     return (
         <div>
@@ -155,7 +145,7 @@ function App() {
             </div>
 
             <div id='res'>
-                </div>
+            </div>
         </div>
     )
 }
