@@ -38,10 +38,44 @@ function App() {
         }
     }
 
+    
+    //https://stackoverflow.com/questions/27863617/is-it-possible-to-copy-a-canvas-image-to-the-clipboard
+    function SelectText(element) {
+        var doc = document;
+        if (doc.body.createTextRange) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(element);
+            range.select();
+        } else if (window.getSelection) {
+            var selection = window.getSelection();
+            var range = document.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }
+
     var copyUserImage = (event) => {
-        // if(navigator.clipboard){
-        //     navigator.clipboard.write(resultImage);
-        // }
+        //https://stackoverflow.com/questions/27863617/is-it-possible-to-copy-a-canvas-image-to-the-clipboard
+        // only works in chrome
+        // document.querySelector('#res canvas').toBlob(function(blob) { 
+        //     const item = new ClipboardItem({ "image/png": blob });
+        //     navigator.clipboard.write([item]); 
+        // });
+
+        var canvas = document.querySelector('#res canvas')
+        var img = document.createElement('img');
+        img.src = canvas.toDataURL()
+        var div = document.createElement('div');
+
+        div.contentEditable = true;
+        div.appendChild(img);
+        document.body.appendChild(div);
+
+        // do copy
+        SelectText(div);
+        document.execCommand('Copy');
+        document.body.removeChild(div);
     }
 
     var submitUserImage = async (event) => {
