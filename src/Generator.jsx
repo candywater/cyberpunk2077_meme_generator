@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import logo1 from './stills/logo-en-ed943f1c.png'
+// import logo1 from './stills/logo-en-ed943f1c.png'
 import logo2 from './stills/logo-horizontal-en-8f759eab.svg'
 import html2canvas from 'html2canvas'
 
@@ -10,6 +10,7 @@ function App() {
     let [userimage, setUserimage] = useState("")
     let [userimageheight, setUserimageheight] = useState(80)
     let [userimagewidth, setUserimagewidth] = useState(320)
+    let [resultImage, setResultImage] = useState("")
 
     let [boxLeft, setBoxLeft] = useState(0)
     let [boxTop, setBoxTop] = useState(0)
@@ -37,13 +38,19 @@ function App() {
         }
     }
 
+    var copyUserImage = (event) => {
+        // if(navigator.clipboard){
+        //     navigator.clipboard.write(resultImage);
+        // }
+    }
+
     var submitUserImage = async (event) => {
         console.log("submitted")
         var result = await html2canvas(document.getElementById('father'));
         removeAllChild(document.querySelector("#res"))
         document.querySelector("#res").appendChild(result)
+        setResultImage(result)
         setIsSubmitted(true)
-        console.log(result)
     }
 
     var removeAllChild = (node) => {
@@ -100,7 +107,7 @@ function App() {
         // event.target.onmouseup = null
     }
     // 鼠标弹起后停止移动
-    var faOnmouserUp = (event) => {        
+    var faOnmouserUp = (event) => {
         setIsMouseDrag(false)
         event.target.onmousemove = null
         // event.target.onmouseup = null
@@ -123,14 +130,19 @@ function App() {
     active:bg-gray-900 
     focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 
     disabled:opacity-25 transition `
-    const SubmitBtnClass = `
-    text-sm rounded-r-lg 
+    const BtnClass = `    
+    text-sm
     bg-sky-400 
     text-gray-800 font-bold 
     px-4 py-2 
     uppercase 
-    border-sky-500 border-t border-b border-r`
-    const ResDivClass = `bg-white bg-opacity-50 border-2 border-zinc-900 mt-1 `
+    border-sky-500 border-t border-b border-r
+    `
+    const SubmitBtnClass = BtnClass + ``
+    const CopyBtnClass = BtnClass + `
+    rounded-r-lg `
+    const ResDivClass = `bg-white bg-opacity-50  mt-1 `
+    const ResDivClassAfterSelectedImage = ` border-2 border-zinc-900 `
 
     return (
         <div className='m-5' >
@@ -138,6 +150,7 @@ function App() {
             <div className={HeaderClass}>
                 <input className={FileInputClass} type="file" id="selectFiles" onChange={dealSelectFile}></input>
                 <button className={SubmitBtnClass} type="button" onClick={submitUserImage}>Submit</button>
+                <button className={CopyBtnClass} type="button" onClick={copyUserImage}>Copy</button>
             </div>
 
             <div className={FakeHeaderClass}></div>
@@ -145,7 +158,7 @@ function App() {
             <div>
                 {/* box是装图片的容器,fa是图片移动缩放的范围,scale是控制缩放的小图标 */}
                 <div id="father"
-                    className={ResDivClass}
+                    className={ResDivClass + (userimage ? ResDivClassAfterSelectedImage : '')}
                     style={{
                         backgroundImage: `url(${userimage})`,
                         // height: `fit-content`,
@@ -175,7 +188,7 @@ function App() {
                     </div>
                 </div>
 
-                <div id='res' className={ResDivClass} style={{
+                <div id='res' className={ResDivClass + (userimage ? ResDivClassAfterSelectedImage : '')} style={{
                     display: isSubmitted ? 'block' : 'none',
                     height: `${userimageheight}px`,
                     width: `${userimagewidth}px`
