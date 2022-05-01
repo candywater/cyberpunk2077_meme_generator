@@ -13,12 +13,11 @@ function App() {
 
     let [boxLeft, setBoxLeft] = useState(0)
     let [boxTop, setBoxTop] = useState(0)
-    let [boxOffsetWidth, setBoxOffsetWidth] = useState(0)
-    let [boxOffsetHeight, setBoxOffsetHeight] = useState(0)
-    let [resImage, setResImage] = useState("")
-
-    // let [disX, setDisX] = useState(0)
-    // let [disY, setDisY] = useState(0)
+    
+    let [boxStartDragLeft, setBoxStartDragLeft] = useState(0)
+    let [boxStartDragTop, setBoxStartDragTop] = useState(0)
+    let [mouseStartDragLeft, setMouseStartDragLeft] = useState(0)
+    let [mouseStartDragTop, setMouseStartDragTop] = useState(0)
 
     let [isMouseDrag, setIsMouseDrag] = useState(false)
 
@@ -58,6 +57,11 @@ function App() {
     var boxOnMouseDown = (event) => {
         if (!userimage) return;
         setIsMouseDrag(true)
+        setBoxStartDragLeft(boxLeft)
+        setBoxStartDragTop(boxTop)
+        setMouseStartDragLeft(event.clientX)
+        setMouseStartDragTop(event.clientY)
+
         console.log(event)
         // console.log(`box mouse down type : ${event.type}`)
         // console.log(`box mouse down : ${isMouseDrag}`)  
@@ -81,28 +85,32 @@ function App() {
         if (!userimage) return;
         if (!isMouseDrag) return;
         event.preventDefault();
-        let mouseLeftOnBox = 200
-        let mouseTopOnBox = 100
-        setBoxLeft(event.clientX - mouseLeftOnBox)
-        setBoxTop(event.clientY - mouseTopOnBox)
+        let mouseDraggedLeftOnBox = event.clientX - mouseStartDragLeft
+        let mouseDraggedTopOnBox = event.clientY - mouseStartDragTop
+        setBoxLeft(boxStartDragLeft + mouseDraggedLeftOnBox)
+        setBoxTop(boxStartDragTop + mouseDraggedTopOnBox)
+
+        // console.log(`clientX: ${event.clientX}\nclientY: ${event.clientY}`)
+        // console.log(`mouseLeftOnBox: ${mouseLeftOnBox}\nmouseTopOnBox: ${mouseTopOnBox}`)
+
         // console.log(`box mouse move type : ${event.type}`)
         // console.log(`box mouse move : ${isMouseDrag}`)   
     }
 
     var faOnMouseMove = event => {
-        // event.target.onmousemove = null
-        // event.target.onmouseup = null
+        event.target.onmousemove = null
+        event.target.onmouseup = null
     }
 
     // 图形移出父盒子取消移动事件,防止移动过快触发鼠标移出事件,导致鼠标弹起事件失效
     var faOnmouseLeave = event => {
-        // event.target.onmousemove = null
-        // event.target.onmouseup = null
+        event.target.onmousemove = null
+        event.target.onmouseup = null
     }
     // 鼠标弹起后停止移动
     var faOnmouserUp = (event) => {
-        // event.target.onmousemove = null
-        // event.target.onmouseup = null
+        event.target.onmousemove = null
+        event.target.onmouseup = null
     }
 
     const FileInputClass = `inline-flex items-center px-4 py-2 bg-gray-600 border border-gray-600 rounded-l 
