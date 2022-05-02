@@ -236,8 +236,6 @@ function App() {
                             // left: `${boxLeft}px`,
                             // top: `${boxTop}px`
                         }}
-                    // offsetLeft={boxLeft}
-                    // offsetTop={boxTop}
                     >
                         <img src={logo2} alt="" srcSet="" />
                         <div id="scale"></div>
