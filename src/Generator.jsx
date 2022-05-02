@@ -12,8 +12,8 @@ function App() {
     let [userimagewidth, setUserimagewidth] = useState(320)
     let [resultImage, setResultImage] = useState("")
 
-    let [boxLeft, setBoxLeft] = useState(0)
-    let [boxTop, setBoxTop] = useState(0)
+    // let [boxLeft, setBoxLeft] = useState(0)
+    // let [boxTop, setBoxTop] = useState(0)
 
     let [boxStartDragLeft, setBoxStartDragLeft] = useState(0)
     let [boxStartDragTop, setBoxStartDragTop] = useState(0)
@@ -38,7 +38,7 @@ function App() {
         }
     }
 
-    
+
     //https://stackoverflow.com/questions/27863617/is-it-possible-to-copy-a-canvas-image-to-the-clipboard
     function SelectText(element) {
         var doc = document;
@@ -100,12 +100,31 @@ function App() {
     var boxOnMouseDown = (event) => {
         if (!userimage) return;
         setIsMouseDrag(true)
-        setBoxStartDragLeft(boxLeft)
-        setBoxStartDragTop(boxTop)
+        // setBoxStartDragLeft(boxLeft)
+        // setBoxStartDragTop(boxTop)
+
+        let boxLeft = document.querySelector("#box").style.left
+        if (boxLeft)
+            boxLeft = boxLeft.substring(0, boxLeft.length - 2)
+        else boxLeft = 0
+        let boxTop = document.querySelector("#box").style.top
+        if (boxTop)
+            boxTop = boxTop.substring(0, boxTop.length - 2)
+        else boxTop = 0
+
+        setBoxStartDragLeft(parseInt(boxLeft))
+        setBoxStartDragTop(parseInt(boxTop))
         setMouseStartDragLeft(event.clientX)
         setMouseStartDragTop(event.clientY)
 
-        // console.log(event)
+        // console.log(`
+        // ismouserDrag:${isMouseDrag}
+        // boxLeft:${boxLeft}
+        // boxTop:${boxTop}
+        // setMouseStartDragLeft:${event.clientX}
+        // setMouseStartDragTop:${event.clientY}
+        // `)
+
         // to prevent image draggable
         event.preventDefault();
     }
@@ -125,8 +144,11 @@ function App() {
         event.preventDefault();
         let mouseDraggedLeftOnBox = event.clientX - mouseStartDragLeft
         let mouseDraggedTopOnBox = event.clientY - mouseStartDragTop
-        setBoxLeft(boxStartDragLeft + mouseDraggedLeftOnBox)
-        setBoxTop(boxStartDragTop + mouseDraggedTopOnBox)
+        // setBoxLeft(boxStartDragLeft + mouseDraggedLeftOnBox)
+        // setBoxTop(boxStartDragTop + mouseDraggedTopOnBox)
+        // to improve performance.
+        document.querySelector("#box").style.left = (boxStartDragLeft + mouseDraggedLeftOnBox) + 'px'
+        document.querySelector("#box").style.top = (boxStartDragTop + mouseDraggedTopOnBox) + 'px'
     }
 
     var faOnMouseMove = event => {
@@ -211,8 +233,8 @@ function App() {
                         onMouseMove={boxOnMouseMove}
                         style={{
                             position: backgroundImage ? 'relative' : 'absolute',
-                            left: `${boxLeft}px`,
-                            top: `${boxTop}px`
+                            // left: `${boxLeft}px`,
+                            // top: `${boxTop}px`
                         }}
                     // offsetLeft={boxLeft}
                     // offsetTop={boxTop}
