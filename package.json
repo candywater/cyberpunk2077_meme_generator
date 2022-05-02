@@ -6,7 +6,7 @@
         "dev": "vite",
         "build": "vite build",
         "docs": "pnpm build && cp -r ./dist/* docs/ && echo copied to docs/",
-        "docs:win": "pnpm build && xcopy /R /Y dist docs && echo copied to docs/",
+        "docs:win": "pnpm build && xcopy /R /Y /E dist docs && echo copied to docs/",
         "preview": "vite preview"
     },
     "dependencies": {
