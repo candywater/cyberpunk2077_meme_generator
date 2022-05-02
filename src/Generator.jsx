@@ -144,9 +144,9 @@ function App() {
         event.preventDefault();
         let mouseDraggedLeftOnBox = event.clientX - mouseStartDragLeft
         let mouseDraggedTopOnBox = event.clientY - mouseStartDragTop
+        // to improve performance.
         // setBoxLeft(boxStartDragLeft + mouseDraggedLeftOnBox)
         // setBoxTop(boxStartDragTop + mouseDraggedTopOnBox)
-        // to improve performance.
         document.querySelector("#box").style.left = (boxStartDragLeft + mouseDraggedLeftOnBox) + 'px'
         document.querySelector("#box").style.top = (boxStartDragTop + mouseDraggedTopOnBox) + 'px'
     }
